@@ -1,85 +1,80 @@
-"""
-COP3504C - Lab 04
-
-Author: Tomas Mejia
-Description: Implementation of linear and binary searches.
-"""
-
-import time
-
-
-def get_data() -> tuple:
-    string_data_set = ["."] * (26**5)
-    temp_set = [".", ".", ".", ".", "."]
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    index = 0
-    for i in range(len(alphabet)):
-        temp_set[4] = alphabet[i]
-        for j in range(len(alphabet)):
-            temp_set[3] = alphabet[j]
-            for k in range(len(alphabet)):
-                temp_set[2] = alphabet[k]
-                for l in range(len(alphabet)):
-                    temp_set[1] = alphabet[l]
-                    for m in range(len(alphabet)):
-                        temp_set[0] = alphabet[m]
-                        string_data_set[index] = (temp_set[0] + temp_set[1] +
-                                                  temp_set[2] + temp_set[3] +
-                                                  temp_set[4])
-                        index += 1
-    string_data_set.sort()
-    string_data_tuple = tuple(string_data_set)
-    return string_data_tuple
-
-
-def linear_search(container, element):
-    for i in range(len(container)):
-        if container[i] == element:
-            return i
-    return -1
-
-
-def binary_search(container, element):
-    low = 0
-    high = len(container)
-    while low != high:
-        mid = (low + high) // 2
-        if element > container[mid]:
-            low = mid+1
-        elif element < container[mid]:
-            high = mid
-        else:
-            return mid
-    return -1
+# Lab 4 - Time Complexity & Profiling
+# Authors: Daniel Pistorino and Sean Hanlon
+import stringdata
+import time as t
 
 
 def main():
-    string_data = get_data()
+    the_data = stringdata.get_data()
 
-    print("Searching for \"not_here\"")
-    startTime = time.time()
-    linear_search(string_data, "not_here")
-    print("Linear took " + str(time.time() - startTime) + " seconds")
-    startTime = time.time()
-    binary_search(string_data, "not_here")
-    print("Binary took " + str(time.time() - startTime) + " seconds")
+    start_time = t.time()
+    nothere_linear_loc = linear_search(the_data, "not_here")
+    end_time = t.time()
+    nothere_linear_time = end_time - start_time
 
-    print("\nSearching for \"mzzzz\"")
-    startTime = time.time()
-    linear_search(string_data, "mzzzz")
-    print("Linear took " + str(time.time() - startTime) + " seconds")
-    startTime = time.time()
-    binary_search(string_data, "mzzzz")
-    print("Binary took " + str(time.time() - startTime) + " seconds")
+    start_time = t.time()
+    nothere_binary_loc = binary_search(the_data, "not_here")
+    end_time = t.time()
+    nothere_binary_time = end_time - start_time
+    print("Search term: 'not_here'")
+    print("Found at location:", nothere_binary_loc)
+    print("\tLinear search time: ", nothere_linear_time)
+    print("\tBinary search time: ", nothere_binary_time)
+    print("\t\tStart time:", start_time)
+    print("\t\tEnd time:", end_time)
+    
+    start_time = t.time()
+    mzzzz_linear_loc = linear_search(the_data, "mzzzz")
+    end_time = t.time()
+    mzzzz_linear_time = end_time - start_time
+    start_time = t.time()
+    mzzzz_binary_loc = binary_search(the_data, "mzzzz")
+    end_time = t.time()
+    mzzzz_binary_time = end_time - start_time
+    print("Search term: 'mzzzz'")
+    print("Found at location:", mzzzz_binary_loc)
+    print("\tLinear search time: ", mzzzz_linear_time)
+    print("\tBinary search time: ", mzzzz_binary_time)
 
-    print("\nSearching for \"aaaaa\"")
-    startTime = time.time()
-    linear_search(string_data, "aaaaa")
-    print("Linear took " + str(time.time() - startTime) + " seconds")
-    startTime = time.time()
-    binary_search(string_data, "aaaaa")
-    print("Binary took " + str(time.time() - startTime) + " seconds")
+    start_time = t.time()
+    aaaaa_linear_loc = linear_search(the_data, "aaaaa")
+    end_time = t.time()
+    aaaaa_linear_time = end_time - start_time
+    start_time = t.time()
+    aaaaa_binary_loc = binary_search(the_data, "aaaaa")
+    end_time = t.time()
+    aaaaa_binary_time = end_time - start_time
+    print("Search term: 'aaaaa'")
+    print("Found at location:", aaaaa_binary_loc)
+    print("\tLinear search time: ", aaaaa_linear_time)
+    print("\tBinary search time: ", aaaaa_binary_time)
+    return 1
+
+def linear_search(container: tuple[str], element: str) -> int:
+    cont_len = len(container)
+    for data_index in range(cont_len):
+        if container[data_index] == element:
+            return data_index
+    return -1
+
+def binary_search(container: tuple[str], element: str) -> int:
+    maxIndex = len(container)-1
+    minIndex = 0
+    midIndex = 0
+    while minIndex <= maxIndex:
+        midIndex = int(minIndex + (maxIndex-minIndex)/2)
+        if container[midIndex] < element:
+            minIndex = midIndex +1
+        elif container[midIndex] > element:
+            maxIndex = midIndex -1
+        elif container[midIndex] == element:
+            return midIndex
+        else:
+            return -1
 
 
-if __name__ == '__main__':
+
+        
+
+if __name__ == "__main__":
     main()
